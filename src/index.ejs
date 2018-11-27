@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>9号米仓</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="https://at.alicdn.com/t/font_802498_dm9zqgqt2s4.css">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./static/magnify/jquery.magnify.min.css">
+    <!-- <link href="https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet"> -->
+    
+    <!-- <script src="https://cdn.ronghub.com/RongIMLib-2.3.0.js"></script> -->
+    <script src="./static/RongIMLib.js"></script>
+    <script src="https://cdn.ronghub.com/RongEmoji-2.2.7.min.js"></script>
+    <script src="https://cdn.ronghub.com/Libamr-2.2.5.min.js"></script> 
+    <script src="https://cdn.ronghub.com/RongIMVoice-2.2.5.min.js"></script>
+    <script src="https://cdn.ronghub.com/rong-sticker-1.0.0.min.js"></script>
+    <!-- <script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script> -->
+    <script src="./static/Convert_Pinyin.js"></script>
+    <!-- <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script> -->
+    <!-- <script src="./static/qiniu/jQuery.js"></script> -->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>
+    <script src="./static/qiniu/qiniu.js"></script>
+    <script src = "./static/qiniu/upload.js"></script>
+    <script src="./static/qiniu/init.js"></script>
+    <script src="./static/qiniu/qrcode.js"></script>
+    <!-- <script src="./static/qiniu/utf.js"></script> -->
+    <script src="http://cstaticdun.126.net/load.min.js"></script>
+    <!-- <script src="./static/magnify/jquery.magnify.min.js"></script> -->
+    <script src="https://webapi.amap.com/maps?v=1.4.8&key=014bf4f9d91831152cef9c8b5d235b36"></script>
+    <% if (htmlWebpackPlugin.options.nodeModules) { %> 
+      <script>
+         require('module').globalPaths.push('<%= htmlWebpackPlugin.options.nodeModules.replace(/\\/g, "\\\\") %>')
+      </script>
+    <% } %>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script>
+      if (process.env.NODE_ENV !== 'development') window.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\') 
+    </script>
+  </body>
+</html>
+<script>
+    window.nodeRequire = require
+    // delete window.require;
+    delete window.exports 
+    delete window.module
+</script>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>message page</title>
+    <style>
+        html, body, div, ul, li, h1, h2, h3, h4, h5, 
+        h6, p, dl, dt, dd, ol, form, input, span:not(.special), a,
+        textarea, th, td, select,button {font-family:
+            "Microsoft YaHei", 
+            "Arial", 
+            "Helvetica", 
+            "sans-serif",
+            "SimSun";
+        }
+        *{
+            margin:0;padding:0;
+        }
+        #unread-message-list{
+            font-size:12px;border:1px solid #ccc;
+            border-bottom:0 none;
+        }
+        #unread-message-list ul{
+            max-height:200px;overflow-y:auto;
+        }
+        #unread-message-list ul::-webkit-scrollbar {/*滚动条整体样式*/
+            width: 5px;
+            height: 5px;
+        }
+        #unread-message-list ul::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+            border-radius: 10px;max-height:30px;
+            background: #fff;
+        }
+        #unread-message-list ul::-webkit-scrollbar-track {/*滚动条里面轨道*/
+            border-radius: 10px;
+            background: #fff;
+        }
+        #unread-message-list ul:hover::-webkit-scrollbar-thumb{
+            background:#ccc;
+        }
+        #unread-message-list p{
+            height:30px;line-height:30px;position:relative;
+        }
+        #unread-message-list p.total{
+            padding-left:10px;font-weight:500;
+        }
+        #unread-message-list p.ignore span{
+            position:absolute;right:10px;top:5px;
+            color:#E6503F;cursor: pointer;
+        }
+        #unread-message-list ul li{
+            height:50px;line-height:50px;cursor:pointer;
+            width:100%;position: relative;
+        }
+        #unread-message-list ul li:hover{
+            background:#ddd;
+        }
+        #unread-message-list ul li img{
+            height:30px;width:30px;margin:10px;border-radius:50%;
+            float:left;
+        }
+        #unread-message-list ul li span.nickname-avatar{
+            display:inline-block;height:30px;width:30px;margin:10px;text-align:center;
+            font-size:16px;float:left;
+            line-height:30px;background:blue;color:#fff;border-radius:50%;
+        }
+        #unread-message-list ul li span.nickname{
+            display:inline-block;width:100px;overflow:hidden;
+            text-overflow:ellipsis;white-space:nowrap
+        }
+        #unread-message-list ul li span.count{
+            line-height:17px;
+            color:#fff;background:red;
+            position:absolute;top:17px;right:30px;
+            padding:0 4px;
+            border-top-left-radius:10px;
+            border-bottom-left-radius:10px;
+            border-top-right-radius:10px;
+            border-bottom-right-radius:10px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17-beta.0/vue.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.10.0/js/md5.min.js"></script> -->
+</head>
+<body>
+        <!-- @mouseleave="hideMsgWin('close-msg-list')" -->
+    <div id="unread-message-list" @mouseleave="hideMsgWin('close-msg-list')">
+        <p class="total">新消息 ( {{ totalCount>99 ? '99+' : totalCount}} )</p>
+        <ul>
+            <li v-for="(item,idx) of list" :key="idx" v-if="item.unReadCount!=0"
+                @click="hideMsgWin(item)">
+                <img :src="item.avatar" alt="" v-if="item.avatar!=null && item.avatar!=''"  v-move/>
+                <span class="nickname-avatar" 
+                    v-if="item.avatar==null || item.avatar==''"
+                    :style="{background:portraitColor(item.targetId)}">{{ item.remarkName ? item.remarkName[0].toUpperCase() : item.nickname[0].toUpperCase() }}</span>
+                <span class="nickname">{{ item.remarkName ? item.remarkName : item.nickname }}</span>
+                <span class="count" v-show="item.unReadCount>0">{{item.unReadCount>99 ? '...' : item.unReadCount}}</span>
+            </li>
+        </ul>
+        <p class="ignore">
+            <span @click="hideMsgWin('hide')">忽略全部</span>
+        </p>
+    </div>
+</body>
+</html>
+<script>
+    const { ipcRenderer } = require('electron')
+    const md5 = require('./md5')
+    new Vue({
+        el:'#unread-message-list',
+
+        data:{
+            list:[]
+        },
+        
+        computed:{
+            totalCount(){
+                let total = 0
+                for(let item of this.list){
+                    total += item.unReadCount
+                }
+                return total
+            }
+            
+        },
+        filters:{
+            formatNickname:(str)=>{
+                if(str.length>6){
+                    return str.substr(0,6) + '...'
+                }else{
+                    return str
+                }
+            }
+        },
+        methods:{
+            // 鼠标离开隐藏消息列表
+            closeMsgList(){
+
+            },
+            // 计算头像背景颜色
+            portraitColor(userid){
+                var colors = ["#e97ffb", "#00b8d4", "#82b2ff", "#f3db73", "#f0857c"]
+                var i = 0
+                if (!userid) {
+                    return colors[0]
+                }else{
+
+                    var str = "wu" + userid + "ye"
+                    var mdstr = md5(str)[0];
+                    mdstr = mdstr ? mdstr : ""
+                    if(mdstr)
+                        i = mdstr.toUpperCase().charCodeAt() % 5
+                }
+                return colors[i]
+            },
+            // 隐藏消息窗口 || 进入指定会话
+            hideMsgWin(params){
+                if(params=='hide'){
+                    this.list = []
+                }
+                if(params!='close-msg-list' && params!='hide'){
+                    let list = this.list
+                    for(let i=0;i<list.length;i++){
+                        if(list[i].targetId==params.targetId){
+                            list.splice(i,1)
+                        }
+                    }
+                    this.list = list
+                }
+                ipcRenderer.send('hide-msgwin', params)
+            }
+        },
+        mounted(){
+            ipcRenderer.on('list-message',(ev,list)=>{
+                this.list = list
+                console.log(list)
+            })
+        }
+    })
+</script>

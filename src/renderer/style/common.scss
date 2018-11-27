@@ -1,0 +1,119 @@
+@mixin nickname_avatar {
+    float:left;display:block;margin-top:10px;color:#fff;
+    height:50px;width:50px;text-align:center;line-height:50px;
+    background:$avatar_color;font-size:20px;border-radius:50%;margin-left:10px;
+}
+
+@mixin btn_default{
+    background:#fff;color:$color-primary;font-size:14px;padding:5px 10px;
+    
+}
+@mixin btn_success{
+    background:#7595F1;color:#fff;font-size:14px;padding:5px 10px;
+}
+@mixin text_ellipse {
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
+}
+@mixin word_break {
+    hyphens:auto;line-break: anywhere;overflow-wrap: break-word;word-break: break-all;
+}
+@mixin close_button {
+    // background:#F45454;
+    border-radius:5px;color:#878C93;font-size:14px;
+    cursor:pointer;font-weight:400;line-height:36px;
+    position:absolute;right:5px;top:5px;display:inline-block;
+    height:18px;width:18px;line-height:18px;text-align:Center;
+}
+@mixin confirm_button {
+    position:absolute;bottom:10px;padding:0;
+    height:25px;width:60px;text-align:center;
+    right:10px;background:#7595F1;
+    color:#fff;font-size:14px;
+}
+@mixin title_style {
+    height:36px;text-align:center;background:#EFF3F6;
+    line-height:36px;font-size:14px;
+}
+@mixin  message_box {
+    position:absolute;top:200px;left:300px;z-index:10000;
+    background:#fff;box-shadow:$div_shadow;
+    transform:scale(0);
+}
+
+@mixin portrait_default {
+    width:44px;height:44px;border-radius:50%;display:block;
+}
+@mixin portrait_mini {
+    width:36px;height:36px;border-radius:50%;
+}
+@mixin portrait_name_default {
+    @include portrait-default;line-height:44px;color:#fff;font-size:20px;
+    text-align:center;
+}
+@mixin portrait_name_mini {
+    @include portrait-mini;line-height:36px;font-size:14px;text-align:center;color:#fff;
+}
+$color-success:#7595F1;
+$color-primary:#333;
+$color-info:#ccc;
+$main_background_color:#F5F5F5;
+$button_color:rgb(203,125,108);
+$avatar_color:rgb(124,146,224);
+$icon_color:rgb(236,115,97);
+$message_count_color:rgb(190,96,74);
+$from_message_color:rgb(255,255,255);
+$to_message_color:rgb(206,220,239);
+$main_font_color:rgb(18,18,18);
+$min_font_color:rgb(167,167,167);
+$border_style:1px solid #E2E2E2;
+// $div_shadow:2px 2px 2px #ddd,-2px 2px 2px #ddd,2px -2px 2px #ddd,-2px -2px 2px#ddd;
+$div_shadow:3px 2px 3px 1px rgba(155, 145, 145,0.1),-3px 2px 3px 1px rgba(155, 145, 145,0.1);
+$hover_bagcolor:#eeeff2;
+$leftnav_bagcolor:#272A2F;
+
+.avatar-portrait-mini,.nickname-portrait-mini{
+    display:inline-block;width:36px;height:36px;border-radius:50%;cursor:pointer;
+}
+.avatar-portrait-mini,.avatar-portrait-primary{
+    font-size:0px;margin:0px;
+}
+.nickname-portrait-mini{
+    line-height:36px;text-align:center;color:#fff;
+}
+.avatar-portrait-primary,.nickname-portrait-primary{
+    display:inline-block;width:44px;height:44px;border-radius:50%;cursor:pointer;
+}
+.nickname-portrait-primary{
+    line-height:44px;text-align:center;color:#fff;
+}
+.fr{
+    float:right;
+}
+.fl{
+    float:left;
+}
+.word-break{
+    @include word_break;
+}
+// 滚动条样式
+.overflow-scroll{
+    overflow:scroll;
+}
+.overflow-scroll::-webkit-scrollbar {/*滚动条整体样式*/
+    width: 5px;
+    height: 5px;
+}
+.overflow-scroll::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+    border-radius: 10px;max-height:30px;
+    background:#fff;
+    opacity:0;
+}
+.overflow-scroll::-webkit-scrollbar-track {/*滚动条里面轨道*/
+    border-radius: 10px;
+    background:#fff;;
+}
+.overflow-scroll:hover::-webkit-scrollbar-thumb{
+    background:#ddd;
+}
